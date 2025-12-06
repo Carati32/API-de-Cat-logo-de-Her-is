@@ -1,4 +1,3 @@
-
   CREATE DATABASE IF NOT EXISTS catalogo_herois;
   USE catalogo_herois;
 
@@ -14,7 +13,6 @@
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );
 
-SELECT * FROM heroes;
   CREATE TABLE IF NOT EXISTS missions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_heroi INT NOT NULL,
@@ -24,15 +22,108 @@ SELECT * FROM heroes;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_heroi) REFERENCES heroes(id) ON DELETE CASCADE
   );
+  
+  
+INSERT INTO heroes (nome, poder, fraqueza, ranking, universo, ativo) VALUES
+('Raio Rubro', 'Eletricidade pura', 'Água salgada', 88, 'Marvel', 1),
+('Vórtice', 'Controle dos ventos', 'Áreas fechadas', 76, 'DC', 1),
+('Geada Negra', 'Criação de gelo', 'Altas temperaturas', 79, 'Marvel', 1),
+('Titã Dourado', 'Força colosal', 'Ataques mentais', 92, 'Outro', 1),
+('Pulse', 'Eletrocomunicação', 'Desconexão total', 65, 'Marvel', 1),
+('Sombra Viva', 'Teleportação sombria', 'Luz intensa', 83, 'DC', 1),
+('Nebulosa', 'Manipulação cósmica', 'Exaustão mental', 95, 'Outro', 1),
+('Solarion', 'Explosões solares', 'Superaquecimento', 87, 'Marvel', 1),
+('Manto Azul', 'Escudo energético', 'Vibrações sônicas', 71, 'DC', 1),
+('Chroma', 'Mudar de forma', 'Espelhos', 68, 'Outro', 1),
+('Graviton', 'Controle gravitacional', 'Campos magnéticos', 93, 'Marvel', 1),
+('Hálito Feral', 'Grito supersônico', 'Silêncio absoluto', 62, 'DC', 1),
+('Aço Supremo', 'Corpo metálico', 'Ferrugem química', 86, 'Outro', 1),
+('Fantasma Rubi', 'Intangibilidade', 'Ruído mágico', 82, 'Marvel', 1),
+('Lunaris', 'Energia lunar', 'Ausência da lua', 77, 'DC', 1),
+('Arcana', 'Magia arcana', 'Tecnologia', 84, 'Outro', 1),
+('Clepsidra', 'Controle do tempo', 'Paradoxos', 96, 'Marvel', 1),
+('Trovão Negro', 'Relâmpagos negros', 'Isolantes', 89, 'DC', 1),
+('Aurora', 'Luz curativa', 'Sombras profundas', 74, 'Outro', 1),
+('Górgon', 'Olhar petrificante', 'Reflexos', 91, 'Marvel', 1),
+('Ignitor', 'Chamas vivas', 'Água', 80, 'DC', 1),
+('Florae', 'Controle da natureza', 'Ambientes desérticos', 69, 'Outro', 1),
+('Sismotron', 'Ondas sísmicas', 'Terrenos instáveis', 85, 'Marvel', 1),
+('Psíclone', 'Telepatia', 'Barulho extremo', 78, 'DC', 1),
+('Arcanjo Cobalto', 'Asas energéticas', 'Pena espiritual', 90, 'Outro', 1),
+('Venatrix', 'Precisão absoluta', 'Ambiente escuro', 72, 'Marvel', 1),
+('Cyberion', 'Tecnopatia', 'Campos EMP', 88, 'DC', 1),
+('Quantum', 'Duplicação quântica', 'Instabilidade', 94, 'Outro', 1),
+('Miragem', 'Ilusões perfeitas', 'Toque físico', 65, 'Marvel', 1),
+('Rochal', 'Corpo de pedra', 'Explosões', 81, 'DC', 1),
+('Espectro Azul', 'Velocidade extrema', 'Congelamento', 93, 'Outro', 1),
+('Nix', 'Controle das trevas', 'Luz celestial', 86, 'Marvel', 1),
+('Forja', 'Construtor de armas de energia', 'Curto-circuitos', 74, 'DC', 1),
+('Panzer', 'Blindagem suprema', 'Vibrações', 89, 'Outro', 1),
+('Clarion', 'Som manipulável', 'Silêncio puro', 71, 'Marvel', 1),
+('Tempéstia', 'Climatização', 'Ambientes selados', 84, 'DC', 1),
+('Dínamo', 'Energia cinética', 'Imobilidade', 82, 'Outro', 1),
+('Draconis', 'Chama dracônica', 'Ventos frios', 90, 'Marvel', 1),
+('Psiwave', 'Manipulação mental', 'Estresse emocional', 79, 'DC', 1),
+('Glacial', 'Gelo absoluto', 'Calor extremo', 87, 'Outro', 1),
+('Impacto', 'Super impacto', 'Absorção de força', 83, 'Marvel', 1),
+('Raios X', 'Visão total', 'Luz opaca', 68, 'DC', 1),
+('Horus', 'Sentidos sobre-humanos', 'Ruído intenso', 77, 'Outro', 1),
+('Argônio', 'Gás sólido', 'Altas pressões', 73, 'Marvel', 1),
+('Spectra', 'Refração corporal', 'Luz ultravioleta', 85, 'DC', 1),
+('Vulcan', 'Magna manipulação', 'Água profunda', 92, 'Outro', 1),
+('Colmeia', 'Controle de insetos', 'Veneno químico', 70, 'Marvel', 1),
+('Engrenagem', 'Força mecânica', 'Óleo quente', 75, 'DC', 1),
+('Ônix', 'Armadura viva', 'Rachaduras', 88, 'Outro', 1),
+('Karma', 'Energia espiritual', 'Desequilíbrio emocional', 91, 'Marvel', 1);
 
-  -- Exemplos de inserts:
-  INSERT INTO heroes (nome, poder, fraqueza, ranking, universo) VALUES
-    ('Aço Veloz','Velocidade sobre-humana','Frio extremo',85,'Outro'),
-    ('Luziana','Manipulação de luz','Escuridão total',78,'Marvel'),
-    ('Sombra','Intangibilidade','Luz intensa',64,'DC'),
-    ('Titã','Força sobre-humana','Velocidade baixa',90,'Outro'),
-    ('Maga','Feitiços','Ceticismo científico',72,'Marvel');
-
-  INSERT INTO missions (id_heroi, titulo, descricao, sucesso) VALUES
-    (1,'Salvar trem','Evitar colisão de trem suburbano',TRUE),
-    (2,'Resgate lunar','Resgatar equipe na lua',FALSE);
+INSERT INTO missions (id_heroi, titulo, descricao, sucesso) VALUES
+(1, 'Patrulha Noturna', 'O herói realizou rondas pela cidade para evitar crimes noturnos.', 1),
+(1, 'Resgate em Incêndio', 'Salvou uma família presa em um prédio em chamas.', 1),
+(2, 'Interceptar Vilão', 'Perseguiu um criminoso em fuga pelo metrô.', 0),
+(2, 'Proteção VIP', 'Protegeu uma figura importante durante um evento público.', 1),
+(3, 'Missão Interdimensional', 'Entrou em um portal desconhecido para investigar anomalias.', 0),
+(3, 'Recolher Artefato', 'Recuperou um artefato místico roubado.', 1),
+(4, 'Combate ao Cybercrime', 'Invadiu uma rede criminosa para impedir ataques digitais.', 1),
+(4, 'Queda de Meteoro', 'Impediu um pequeno meteoro de atingir uma região urbana.', 1),
+(5, 'Salvamento Aquático', 'Resgatou um navio prestes a naufragar.', 1),
+(5, 'Enfrentar Criatura Marinha', 'Lutou contra uma criatura gigante próxima da costa.', 0),
+(6, 'Escape de Laboratório', 'Ajudou civis presos em um laboratório em colapso.', 1),
+(6, 'Caçar Mercenários', 'Perseguiu um grupo armado em uma floresta.', 0),
+(7, 'Operação Silenciosa', 'Neutralizou uma operação criminosa sem ser detectado.', 1),
+(7, 'Salvar Reféns', 'Entrou em um prédio para resgatar reféns de um sequestro.', 1),
+(8, 'Pirâmide Misteriosa', 'Explorou ruínas antigas que liberavam energia desconhecida.', 0),
+(8, 'Proteger a Relíquia', 'Impediu um grupo de saqueadores de roubar uma relíquia rara.', 1),
+(9, 'Voo de Patrulha', 'Monitorou todo o território aéreo da cidade.', 1),
+(9, 'Tornado Repentino', 'Usou habilidades especiais para estabilizar um fenômeno climático.', 0),
+(10, 'Invasão Alienígena', 'Liderou equipes para repelir forças alienígenas.', 1),
+(10, 'Montanha Instável', 'Impediu o colapso de uma montanha que ameaçava uma vila.', 1),
+(11, 'Buscando Informações', 'Infiltrou-se em um grupo para coletar dados de vilões.', 1),
+(11, 'Sabotar Base Inimiga', 'Instalou dispositivos para destruir uma base criminosa.', 0),
+(12, 'Controle de Multidão', 'Ajudou em um evento que saiu do controle.', 1),
+(12, 'Ataque Químico', 'Desarmou bombas químicas colocadas em prédios.', 1),
+(13, 'Criatura Mutante', 'Enfrentou uma criatura criada em laboratório.', 0),
+(13, 'Proteger Orfanato', 'Impediu criminosos de invadir um orfanato.', 1),
+(14, 'Tempestade Elétrica', 'Usou habilidades para conter descargas descontroladas.', 1),
+(14, 'Arena Subterrânea', 'Participou de um combate clandestino para encontrar um vilão.', 0),
+(15, 'Queda de Avião', 'Ajudou a pousar um avião danificado.', 1),
+(15, 'Investigar Radiação', 'Investigou uma região com níveis de radiação instáveis.', 0),
+(16, 'Roubo de Banco', 'Interveio em um assalto complexo com múltiplos criminosos.', 1),
+(16, 'Salvar Animais', 'Resgatou animais presos em um incêndio florestal.', 1),
+(17, 'Laboratório Submerso', 'Explorou um laboratório escondido debaixo do oceano.', 0),
+(17, 'Escoltar Transporte', 'Protegeu um comboio de recursos importantes.', 1),
+(18, 'Ciberataque Massivo', 'Deteve hackers que tentavam derrubar sistemas globais.', 1),
+(18, 'Robô Descontrolado', 'Desativou um robô gigante fora de controle.', 1),
+(19, 'Luta no Trem', 'Bateu de frente com criminosos em um trem em movimento.', 1),
+(19, 'Explosão em Mina', 'Resgatou mineiros presos após uma detonação acidental.', 0),
+(20, 'Reconstrução Urbana', 'Ajudou após um tremor que destruiu parte da cidade.', 1),
+(20, 'Duelo Final', 'Enfrentou um dos maiores vilões de seu universo.', 1),
+(5, 'Missão Subterrânea', 'Explorou túneis para deter criaturas desconhecidas.', 0),
+(8, 'Céu Vermelho', 'Investigou fenômeno dimensional que mudou a cor do céu.', 1),
+(12, 'Energia Corrompida', 'Neutralizou um gerador que produzia energia instável.', 0),
+(2, 'Corrida Contra o Tempo', 'Desativou bombas espalhadas pela cidade.', 1),
+(7, 'Guardião Fantasma', 'Caçou uma entidade hostil que se movia entre sombras.', 1),
+(4, 'Colapso da Ponte', 'Interveio para evitar o desabamento de uma ponte durante um terremoto.', 1),
+(6, 'Fuga dos Autômatos', 'Impedir que autômatos roubados atacassem civis no centro da cidade.', 1),
+(11, 'Sombra do Passado', 'Investigar estranhas aparições ligadas a um vilão do passado.', 0),
+(14, 'Coração da Tempestade', 'Desativar um dispositivo que gerava tempestades artificiais.', 1),
+(20, 'Última Fortaleza', 'Assaltar a base final do inimigo para recuperar tecnologia roubada.', 0);
