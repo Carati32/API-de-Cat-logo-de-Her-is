@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -9,9 +8,7 @@ app.use(cors());
 
 const PORT = 3000;
 
-// ==============================
-// BANCO DE DADOS (SEM .env)
-// ==============================
+
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
@@ -37,25 +34,11 @@ app.get('/heroes', async (req, res) => {
     }
 });
 
-app.get('/heroes/:id', async (req, res) => {
-    try {
-        const [heroi] = await db.query(
-            "SELECT * FROM heroes WHERE id = ?",
-            [req.params.id]
-        );
 
-        if (heroi.length === 0)
-            return res.status(404).json({ mensagem: "Herói não encontrado" });
-
-        res.json(heroi[0]);
-    } catch (error) {
-        res.status(500).json({ erro: error.message });
-    }
-});
-
-// BUSCAR POR NOME
 app.get('/heroes/buscar', async (req, res) => {
     try {
+            console.log("Query recebida:", req.query);
+
         const { nome } = req.query;
 
         if (!nome || nome.trim() === "") {
@@ -78,8 +61,24 @@ app.get('/heroes/buscar', async (req, res) => {
     }
 });
 
+app.get('/heroes/:id', async (req, res) => {
+    try {
+        const [heroi] = await db.query(
+            "SELECT * FROM heroes WHERE id = ?",
+            [req.params.id]
+        );
 
-// RANKING TOP 10
+        if (heroi.length === 0)
+            return res.status(404).json({ mensagem: "Herói não encontrado" });
+
+        res.json(heroi[0]);
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+});
+
+
+
 app.get('/heroes/ranking/top10', async (req, res) => {
     try {
         const [dados] = await db.query(
@@ -91,7 +90,6 @@ app.get('/heroes/ranking/top10', async (req, res) => {
     }
 });
 
-// CRIAR HERÓI
 app.post('/heroes', async (req, res) => {
     try {
         const { nome, poder, fraqueza, ranking, universo, ativo } = req.body;
@@ -102,31 +100,48 @@ app.post('/heroes', async (req, res) => {
             [nome, poder, fraqueza, ranking, universo, ativo ?? 1]
         );
 
-        res.json({ id: result.insertId });
-    } catch (error) {
+       res.status(201).json({
+            id: result.insertId,
+            nome,
+            poder,
+            fraqueza,
+            ranking,
+            universo,
+            ativo: ativo ?? 1
+        });   
+     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
 });
 
-// ATUALIZAR HERÓI
 app.put('/heroes/:id', async (req, res) => {
     try {
         const { nome, poder, fraqueza, ranking, universo, ativo } = req.body;
-
-        await db.query(
+        const { id } = req.params;
+        const [result] = await db.query(
             `UPDATE heroes
              SET nome=?, poder=?, fraqueza=?, ranking=?, universo=?, ativo=?
              WHERE id=?`,
-            [nome, poder, fraqueza, ranking, universo, ativo, req.params.id]
+            [nome, poder, fraqueza, ranking, universo, ativo, id]
         );
 
-        res.json({ mensagem: "Herói atualizado" });
+        res.json({
+            mensagem: "Herói atualizado com sucesso!",
+            id,
+            nome,
+            poder,
+            fraqueza,
+            ranking,
+            universo,
+            ativo: ativo ?? 1
+        });
+
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
 });
 
-// DELETAR HERÓI
+
 app.delete('/heroes/:id', async (req, res) => {
     try {
         await db.query("DELETE FROM heroes WHERE id=?", [req.params.id]);
@@ -136,34 +151,80 @@ app.delete('/heroes/:id', async (req, res) => {
     }
 });
 
-// ATIVAR
 app.put('/heroes/:id/ativar', async (req, res) => {
     try {
-        await db.query("UPDATE heroes SET ativo=1 WHERE id=?", [req.params.id]);
-        res.json({ mensagem: "Herói ativado" });
+        const { id } = req.params;
+        const [rows] = await db.query("SELECT * FROM heroes WHERE id=?", [id]);
+        const heroi = rows[0];
+
+        if (!heroi) {
+            return res.status(404).json({ erro: "Herói não encontrado." });
+        }
+
+        if (heroi.ativo === 1) {
+            return res.json({
+                mensagem: "Herói já estava ativo.",
+                heroi
+            });
+        }
+
+        await db.query("UPDATE heroes SET ativo=1 WHERE id=?", [id]);
+
+        const [dadosAtualizados] = await db.query("SELECT * FROM heroes WHERE id=?", [id]);
+
+        res.json({
+            mensagem: "Herói ativado com sucesso!",
+            heroi: dadosAtualizados[0]
+        });
+
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
 });
 
-// DESATIVAR
 app.put('/heroes/:id/desativar', async (req, res) => {
     try {
-        await db.query("UPDATE heroes SET ativo=0 WHERE id=?", [req.params.id]);
-        res.json({ mensagem: "Herói desativado" });
+        const { id } = req.params;
+        const [rows] = await db.query("SELECT * FROM heroes WHERE id=?", [id]);
+        const heroi = rows[0];
+
+        if (!heroi) {
+            return res.status(404).json({ erro: "Herói não encontrado." });
+        }
+
+        if (heroi.ativo === 0) {
+            return res.json({
+                mensagem: "Herói já estava desativado.",
+                heroi
+            });
+        }
+
+        await db.query("UPDATE heroes SET ativo=0 WHERE id=?", [id]);
+        const [dadosAtualizados] = await db.query("SELECT * FROM heroes WHERE id=?", [id]);
+
+        res.json({
+            mensagem: "Herói desativado com sucesso!",
+            heroi: dadosAtualizados[0]
+        });
+
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
 });
 
-// ==============================
-// MISSÕES
-// ==============================
 
-// CRIAR MISSÃO
 app.post('/missions', async (req, res) => {
     try {
         const { id_heroi, titulo, descricao, sucesso } = req.body;
+
+        const [heroRows] = await db.query(
+            "SELECT * FROM heroes WHERE id = ?",
+            [id_heroi]
+        );
+
+        if (heroRows.length === 0) {
+            return res.status(404).json({ erro: "Herói não encontrado." });
+        }
 
         const [result] = await db.query(
             `INSERT INTO missions (id_heroi, titulo, descricao, sucesso)
@@ -171,13 +232,20 @@ app.post('/missions', async (req, res) => {
             [id_heroi, titulo, descricao, sucesso ?? 0]
         );
 
-        res.json({ id: result.insertId });
+        res.status(201).json({
+            id: result.insertId,
+            id_heroi,
+            titulo,
+            descricao,
+            sucesso: sucesso ?? 0,
+        });
+
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
 });
 
-// LISTAR MISSÕES DE UM HERÓI
+
 app.get('/heroes/:id/missions', async (req, res) => {
     try {
         const [dados] = await db.query(
@@ -190,9 +258,6 @@ app.get('/heroes/:id/missions', async (req, res) => {
     }
 });
 
-// ==============================
-// INICIAR SERVIDOR
-// ==============================
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando em: http://localhost:${PORT}`);
 });
